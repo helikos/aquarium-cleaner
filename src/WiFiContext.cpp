@@ -21,7 +21,7 @@ bool WiFiContext::flashFlag = true;
 
 extern Logger logger;
 
-IPAddress ip(192, 168, 1, 189);
+IPAddress ip(192, 168, 1, 190);
 IPAddress dns(192, 168, 1, 1);
 IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 255, 0);

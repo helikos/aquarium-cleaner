@@ -2,7 +2,7 @@
 #include <limits.h>
 #include <ESPAsyncWebServer.h>
 #include <AsyncElegantOTA.h>
-#include "Adafruit_VL53L0X.h"
+//#include "Adafruit_VL53L0X.h"
 #include <esp_task_wdt.h>
 
 #include <runningAverage.h>
@@ -21,12 +21,14 @@ WiFiContext wifiContext;
 Logger logger;
 AsyncWebServer server(80);
 
-Adafruit_VL53L0X lox = Adafruit_VL53L0X();
+//Adafruit_VL53L0X lox = Adafruit_VL53L0X();
 
 GMedian3<float> medianFilter;
 GFilterRA runningAverage;
 
 
+int value = 0; // variable to store the sensor value
+int level = 0; // variable to store the water level
 
 void setup()
 {
@@ -47,6 +49,7 @@ void setup()
   Serial.println("Setup Ended");
   Serial.println("[APP] Free memory: " + String(esp_get_free_heap_size()) + " bytes");
 
+/*
   Serial.println("Adafruit VL53L0X test.");
   if (!lox.begin())
   {
@@ -55,26 +58,42 @@ void setup()
   }
   // power
   Serial.println(F("VL53L0X API Continuous Ranging example\n\n"));
+// start continuous ranging
+//  lox.startRangeContinuous();
+*/  
   runningAverage.setCoef(0.5);
   runningAverage.setStep(100);
-
-  // start continuous ranging
-  lox.startRangeContinuous();
 
   pinMode(pumpPinIn, OUTPUT); // Set GPIO22 as digital output pin
   pinMode(pumpPinOut, OUTPUT); // Set GPIO22 as digital output pin
 
-  esp_task_wdt_init(WDT_TIMEOUT, true); // Initialize ESP32 Task WDT
-  esp_task_wdt_add(NULL);               // Subscribe to the Task WDT
+//  esp_task_wdt_init(WDT_TIMEOUT, true); // Initialize ESP32 Task WDT
+//  esp_task_wdt_add(NULL);               // Subscribe to the Task WDT
 
 //  digitalWrite(pumpPinOut, HIGH); 
 //  digitalWrite(pumpPinIn, HIGH); 
+  pinMode(POWER_PIN, OUTPUT);   // configure D7 pin as an OUTPUT
+  digitalWrite(POWER_PIN, LOW); // turn the sensor OFF
+
+  pinMode(16, OUTPUT);   // configure D7 pin as an OUTPUT
+  digitalWrite(16, HIGH);  // turn the sensor ON
 
 }
 
 void loop()
 {
-  
+
+  digitalWrite(POWER_PIN, HIGH);  // turn the sensor ON
+  delay(10);                      // wait 10 milliseconds
+  value = analogRead(SIGNAL_PIN); // read the analog value from sensor
+  digitalWrite(POWER_PIN, LOW);   // turn the sensor OFF
+
+  level = map(value, SENSOR_MIN, SENSOR_MAX, 0, 4); // 4 levels
+  Serial.print("Water level: ");
+  Serial.println(level);
+
+  delay(1000);
+  /*
   if (lox.isRangeComplete())
   {
 //    Serial.print("Distance in mm: ");
@@ -100,6 +119,7 @@ void loop()
     esp_task_wdt_reset();
     delay(3000);
   }
+*/  
 /*  
   else {
     digitalWrite(pumpPinOut, LOW); 
