@@ -68,7 +68,7 @@ void WiFiContext::connectToWifi()
     WiFi.config(ip, gateway, subnet, dns);
     WiFi.begin(_ssid, _pass);
     Serial.print("Connecting to WiFi ..");
-    delay(1000);
+    delay(5000);
 }
  
 void WiFiContext::stopTimer() {

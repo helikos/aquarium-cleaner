@@ -27,8 +27,66 @@ GMedian3<float> medianFilter;
 GFilterRA runningAverage;
 
 
-int value = 0; // variable to store the sensor value
-int level = 0; // variable to store the water level
+uint16_t value = 0; // variable to store the sensor value
+float level = 0; // variable to store the water level
+
+void initPumnIn() {
+  pinMode(pumpInPin, OUTPUT); 
+  pinMode(pumpInLedOnPin, OUTPUT); 
+  pinMode(pumpInLedOffPin, OUTPUT); 
+  digitalWrite(pumpInPin, LOW); 
+  digitalWrite(pumpInLedOnPin, LOW); 
+  digitalWrite(pumpInLedOffPin, LOW); 
+}
+
+void PumnInOn() {
+  digitalWrite(pumpInPin, HIGH); 
+  digitalWrite(pumpInLedOnPin, HIGH); 
+  digitalWrite(pumpInLedOffPin, LOW); 
+}
+
+void PumnInOff() {
+  digitalWrite(pumpInPin, LOW); 
+  digitalWrite(pumpInLedOnPin, LOW); 
+  digitalWrite(pumpInLedOffPin, HIGH); 
+}
+
+
+void PumnOutOn() {
+  digitalWrite(pumpOutPin, HIGH); 
+  digitalWrite(pumpOutLedOnPin, HIGH); 
+  digitalWrite(pumpOutLedOffPin, LOW); 
+}
+
+void PumnOutOff() {
+  digitalWrite(pumpOutPin, LOW); 
+  digitalWrite(pumpOutLedOnPin, LOW); 
+  digitalWrite(pumpOutLedOffPin, HIGH); 
+}
+
+
+void initPumnOut() {
+  pinMode(pumpOutPin, OUTPUT); 
+  pinMode(pumpOutLedOnPin, OUTPUT); 
+  pinMode(pumpOutLedOffPin, OUTPUT); 
+  digitalWrite(pumpOutPin, LOW); 
+  digitalWrite(pumpOutLedOnPin, LOW); 
+  digitalWrite(pumpOutLedOffPin, LOW); 
+}
+
+void initWaterSensor() {
+  pinMode(waterSensorPowerPin, OUTPUT);   // configure D7 pin as an OUTPUT
+  digitalWrite(waterSensorPowerPin, LOW); // turn the sensor OFF
+}
+
+
+uint16_t readWaterSensorValue() {
+  digitalWrite(waterSensorPowerPin, HIGH);  // turn the sensor ON
+  delay(10);                      // wait 10 milliseconds
+  value = analogRead(waterSensorSignalPin); // read the analog value from sensor
+  digitalWrite(waterSensorPowerPin, LOW);   // turn the sensor OFF
+  return value;
+}
 
 void setup()
 {
@@ -49,82 +107,46 @@ void setup()
   Serial.println("Setup Ended");
   Serial.println("[APP] Free memory: " + String(esp_get_free_heap_size()) + " bytes");
 
-/*
-  Serial.println("Adafruit VL53L0X test.");
-  if (!lox.begin())
-  {
-    Serial.println(F("Failed to boot VL53L0X"));
-    while (1);
-  }
-  // power
-  Serial.println(F("VL53L0X API Continuous Ranging example\n\n"));
-// start continuous ranging
-//  lox.startRangeContinuous();
-*/  
   runningAverage.setCoef(0.5);
   runningAverage.setStep(100);
 
-  pinMode(pumpPinIn, OUTPUT); // Set GPIO22 as digital output pin
-  pinMode(pumpPinOut, OUTPUT); // Set GPIO22 as digital output pin
+  initPumnIn();
+  initPumnOut();
+  initWaterSensor();
 
-//  esp_task_wdt_init(WDT_TIMEOUT, true); // Initialize ESP32 Task WDT
-//  esp_task_wdt_add(NULL);               // Subscribe to the Task WDT
-
-//  digitalWrite(pumpPinOut, HIGH); 
-//  digitalWrite(pumpPinIn, HIGH); 
-  pinMode(POWER_PIN, OUTPUT);   // configure D7 pin as an OUTPUT
-  digitalWrite(POWER_PIN, LOW); // turn the sensor OFF
-
-  pinMode(16, OUTPUT);   // configure D7 pin as an OUTPUT
-  digitalWrite(16, HIGH);  // turn the sensor ON
+  esp_task_wdt_init(WDT_TIMEOUT, true); // Initialize ESP32 Task WDT
+  esp_task_wdt_add(NULL);               // Subscribe to the Task WDT
 
 }
 
 void loop()
 {
 
-  digitalWrite(POWER_PIN, HIGH);  // turn the sensor ON
-  delay(10);                      // wait 10 milliseconds
-  value = analogRead(SIGNAL_PIN); // read the analog value from sensor
-  digitalWrite(POWER_PIN, LOW);   // turn the sensor OFF
+  value = readWaterSensorValue();
+  level = medianFilter.filtered(value);
 
-  level = map(value, SENSOR_MIN, SENSOR_MAX, 0, 4); // 4 levels
   Serial.print("Water level: ");
   Serial.println(level);
 
-  delay(1000);
-  /*
-  if (lox.isRangeComplete())
-  {
-//    Serial.print("Distance in mm: ");
-    uint16_t range = lox.readRange();
-    float avgRange =  medianFilter.filtered((float)range );
-
-    if ( abs(avgRange - rangeWater) <= deviationWater ) {
-      logger.log(PSTR("Normal: Distance in mm: %f"),  avgRange);
-      digitalWrite(pumpPinOut, HIGH); 
-      digitalWrite(pumpPinIn, HIGH); 
-    }
-
-    if ( (avgRange - rangeWater) > deviationWater4Motor + deviationWater) {
-      logger.log(PSTR("Out pumn off: Distance in mm: %f"), avgRange);
-      digitalWrite(pumpPinOut, LOW); 
-      digitalWrite(pumpPinIn, HIGH); 
-    } 
-    if ( (rangeWater - avgRange) > deviationWater4Motor + deviationWater) {
-      logger.log(PSTR("In pumn off: Distance in mm: %f"), avgRange);
-      digitalWrite(pumpPinOut, HIGH); 
-      digitalWrite(pumpPinIn, LOW); 
-    } 
-    esp_task_wdt_reset();
-    delay(3000);
+  if ( abs(level - normalLevel) <= deviationWater ) {
+    logger.log(PSTR("Normal: Distance in mm: %f"),  level);
+    PumnInOn();
+    PumnOutOn();
+  } else if ( (level - normalLevel) > deviationWater4Motor) {
+    logger.log(PSTR("In pumn off: Distance in mm: %f"), level);
+    PumnInOff();
+    PumnOutOn();
+  } else if ( (normalLevel - level) > deviationWater4Motor) {
+    logger.log(PSTR("Out pumn off: Distance in mm: %f"), level);
+    PumnInOn();
+    PumnOutOff();
+  } else {
+    logger.log(PSTR("Pump off %f"), level);
+    PumnInOff();
+    PumnOutOff();
   }
-*/  
-/*  
-  else {
-    digitalWrite(pumpPinOut, LOW); 
-    digitalWrite(pumpPinIn, LOW); 
-  }
-*/  
+
+  esp_task_wdt_reset();
+  delay(3000);
 
 }
