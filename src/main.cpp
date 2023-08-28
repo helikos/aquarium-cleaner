@@ -2,10 +2,8 @@
 #include <limits.h>
 #include <ESPAsyncWebServer.h>
 #include <AsyncElegantOTA.h>
-//#include "Adafruit_VL53L0X.h"
 #include <esp_task_wdt.h>
 
-#include <runningAverage.h>
 #include <median3.h>
 
 
@@ -21,11 +19,8 @@ WiFiContext wifiContext;
 Logger logger;
 AsyncWebServer server(80);
 
-//Adafruit_VL53L0X lox = Adafruit_VL53L0X();
 
 GMedian3<float> medianFilter;
-GFilterRA runningAverage;
-
 
 uint16_t value = 0; // variable to store the sensor value
 float level = 0; // variable to store the water level
@@ -106,9 +101,6 @@ void setup()
 
   Serial.println("Setup Ended");
   Serial.println("[APP] Free memory: " + String(esp_get_free_heap_size()) + " bytes");
-
-  runningAverage.setCoef(0.5);
-  runningAverage.setStep(100);
 
   initPumnIn();
   initPumnOut();
