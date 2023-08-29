@@ -16,13 +16,12 @@
 #define pumpOutLedOnPin  18
 #define pumpOutLedOffPin  19
 
-#define minLevel 400
-#define maxLevel 1100
+#define minLevel 600
+#define maxLevel 1300
 
 #define normalLevel (minLevel + maxLevel)/2
 
-#define deviationWater 200
-#define deviationWater4Motor 150
+#define deviationWater 100
 
 #define WDT_TIMEOUT 5                   // WDT Timeout in seconds
 

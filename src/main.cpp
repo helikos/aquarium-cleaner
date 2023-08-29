@@ -124,11 +124,11 @@ void loop()
     logger.log(PSTR("Normal: Distance in mm: %f"),  level);
     PumnInOn();
     PumnOutOn();
-  } else if ( (level - normalLevel) > deviationWater4Motor) {
+  } else if (level > (normalLevel + deviationWater)) {
     logger.log(PSTR("In pumn off: Distance in mm: %f"), level);
     PumnInOff();
     PumnOutOn();
-  } else if ( (normalLevel - level) > deviationWater4Motor) {
+  } else if ( level < (normalLevel - deviationWater) ) {
     logger.log(PSTR("Out pumn off: Distance in mm: %f"), level);
     PumnInOn();
     PumnOutOff();

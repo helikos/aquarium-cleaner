@@ -16,7 +16,9 @@ extern Logger logger;
 
 void getFreeHeapSize(AsyncWebServerRequest *request)
 {
-  String status = "Hi! I am alarm map.\n";
+  String status = "Hi! I am ";
+  status += nameboard;
+  status += "\n";
   status += "Free heap memory size is ";
   status += String(esp_get_free_heap_size());
   status += " bytes \n";
