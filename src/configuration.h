@@ -16,7 +16,7 @@
 #define pumpOutLedOnPin  18
 #define pumpOutLedOffPin  19
 
-#define minLevel 600
+#define minLevel 1000
 #define maxLevel 1300
 
 #define normalLevel (minLevel + maxLevel)/2

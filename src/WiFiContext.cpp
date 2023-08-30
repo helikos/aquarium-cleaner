@@ -38,6 +38,7 @@ void WiFiContext::initializate(const char *ssid, const char *pass)
     flashFlag = true;
     WiFi.mode(WIFI_STA);
     WiFi.onEvent(WiFiEvent);
+    WiFi.config(ip, gateway, subnet, dns);
     connectToWifi();
     logger.log(PSTR("WiFiContext::initializate completed"));
 }
@@ -65,7 +66,7 @@ void WiFiContext::flashLed() {
 void WiFiContext::connectToWifi()
 {
     logger.log(PSTR("Connecting to Wi-Fi..."));
-    WiFi.config(ip, gateway, subnet, dns);
+    WiFi.disconnect();
     WiFi.begin(_ssid, _pass);
     Serial.print("Connecting to WiFi ..");
     delay(5000);
