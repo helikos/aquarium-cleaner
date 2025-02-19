@@ -1,5 +1,4 @@
 #include "Logger.h"
-#include "configuration.h"
 
 #include <Arduino.h>
 #include <forward_list>

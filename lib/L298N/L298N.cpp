@@ -61,11 +61,8 @@ void L298N::brake() {
 
 void L298N::forward() {
   if(this->_debug) {trace("forward()");}
-  if(this->_debug) {trace("_enPin");}
   digitalWrite(_enPin, HIGH); 
-  if(this->_debug) {trace("_inaPin");}
   digitalWrite(_inaPin, HIGH);
-  if(this->_debug) {trace("_inbPin");}
   digitalWrite(_inbPin, LOW);
   _status = FORWARD;
 }

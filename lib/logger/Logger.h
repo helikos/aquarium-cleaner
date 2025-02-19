@@ -2,7 +2,11 @@
 #ifndef _LOGGER_H
 #define _LOGGER_H
 
-#include "configuration.h"
+#define sizeOfLog 128
+#define isPrint2Serial
+#define msgLength 64
+#define nameboard "aquarium-cleaner"
+
 #include <Arduino.h>
 #include <ESPAsyncWebServer.h>
 
