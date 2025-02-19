@@ -68,8 +68,18 @@ void WiFiContext::connectToWifi()
     logger.log(PSTR("Connecting to Wi-Fi..."));
     WiFi.disconnect();
     WiFi.begin(_ssid, _pass);
+    uint32_t notConnectedCounter = 0;
+    while (WiFi.status() != WL_CONNECTED) {
+      delay(100);
+//      logger.log(PSTR("Wifi connecting..."));
+      notConnectedCounter++;
+      if(notConnectedCounter > 150) { // Reset board if not connected after 5s
+          logger.log(PSTR("Resetting due to Wifi not connecting..."));
+          ESP.restart();
+      }
+    }
     Serial.print("Connecting to WiFi ..");
-    delay(5000);
+//    delay(5000);
 }
  
 void WiFiContext::stopTimer() {
