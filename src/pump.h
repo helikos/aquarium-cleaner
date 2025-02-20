@@ -97,12 +97,12 @@ class Pump{
             outLedOnPin = _PumpOutLedOnPin;
             outLedOffPin = _PumpOutLedOffPin;
             _DEBUG = debug;
-            pumnInState = false;
-            pumnOutState = false;
-
-
+            pumnInState = true;
+            pumnOutState = true;
             inPumn = initPumn(_PumpInIn1Pin, _PumpInIn2Pin, _PumpInEnPin, _PumpInLedOnPin, _PumpInLedOffPin);
             outPumn = initPumn(_PumpOutIn1Pin, _PumpOutIn2Pin, _PumpOutEnPin, _PumpOutLedOnPin, _PumpOutLedOffPin);
+            pumnInOff();
+            pumnOutOff();
         }
 
         static void processing() {

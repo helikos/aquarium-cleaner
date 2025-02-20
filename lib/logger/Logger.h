@@ -4,7 +4,7 @@
 
 #define sizeOfLog 128
 #define isPrint2Serial
-#define msgLength 64
+#define msgLength 180
 #define nameboard "aquarium-cleaner"
 
 #include <Arduino.h>

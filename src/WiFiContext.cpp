@@ -21,11 +21,12 @@ bool WiFiContext::flashFlag = true;
 
 extern Logger logger;
 
+/*
 IPAddress ip(192, 168, 1, 190);
 IPAddress dns(192, 168, 1, 1);
 IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 255, 0);
-
+*/
 
 void WiFiContext::initializate(const char *ssid, const char *pass)
 {
@@ -37,8 +38,11 @@ void WiFiContext::initializate(const char *ssid, const char *pass)
     _pass = pass;
     flashFlag = true;
     WiFi.mode(WIFI_STA);
+    WiFi.disconnect();
+    delay(100);    
+    
     WiFi.onEvent(WiFiEvent);
-    WiFi.config(ip, gateway, subnet, dns);
+//    WiFi.config(ip, gateway, subnet, dns);
     connectToWifi();
     logger.log(PSTR("WiFiContext::initializate completed"));
 }
@@ -66,20 +70,9 @@ void WiFiContext::flashLed() {
 void WiFiContext::connectToWifi()
 {
     logger.log(PSTR("Connecting to Wi-Fi..."));
-    WiFi.disconnect();
     WiFi.begin(_ssid, _pass);
-    uint32_t notConnectedCounter = 0;
-    while (WiFi.status() != WL_CONNECTED) {
-      delay(100);
-//      logger.log(PSTR("Wifi connecting..."));
-      notConnectedCounter++;
-      if(notConnectedCounter > 150) { // Reset board if not connected after 5s
-          logger.log(PSTR("Resetting due to Wifi not connecting..."));
-          ESP.restart();
-      }
-    }
     Serial.print("Connecting to WiFi ..");
-//    delay(5000);
+    delay(5000);
 }
  
 void WiFiContext::stopTimer() {

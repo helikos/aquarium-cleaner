@@ -18,8 +18,9 @@ class ElectricityConsumption {
                 auto volt = ina_0->getVoltage((ina3221_ch_t)i);
                 auto watt = curr * volt;
                 char buffer[50];
-                int len = sprintf(buffer, "A%d: Current:%5.2fA Voltage:%5.2fV power:%5.2fwt\n", i+1, curr, volt, watt);
+                int len = sprintf(buffer, "A%d: Current:%5.2fA Voltage:%5.2fV power:%5.2fwt", i+1, curr, volt, watt);
                 s += buffer;
+                s += i < 2 ? "\n":"";
             }
             return s;
         };
@@ -38,7 +39,7 @@ class ElectricityConsumption {
             logger.log(getText("").c_str());
         }
 
-        void electricityConsumption(AsyncWebServerRequest *request){
+        static void electricityConsumption(AsyncWebServerRequest *request){
             String status = "Hi! I am ";
             status += nameboard;
             status += "\n";

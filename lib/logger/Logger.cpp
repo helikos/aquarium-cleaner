@@ -27,8 +27,7 @@ size_t Logger::log(const char *format, ...)
     Serial.println(Logger::serial_msg);
 #endif
     va_end(copy);
-    if (len < 0)
-    {
+    if (len < 0) {
         va_end(arg);
         return 0;
     }
@@ -86,8 +85,7 @@ void Logger::publishLog(AsyncWebServerRequest *request)
     u_int32_t pos = 0;
     if (Logger::size >= sizeOfLog)
         pos = Logger::position;
-    for (u_int32_t i = 0; i < Logger::size; i++)
-    {
+    for (u_int32_t i = 0; i < Logger::size; i++) {
         status += String(Logger::buffer[pos]) + "\n";
         pos = Logger::addPosition(pos);
     }
