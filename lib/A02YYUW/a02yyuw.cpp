@@ -55,7 +55,7 @@ void a02yyuw::stopTimer()
 {
     if (xTimerIsTimerActive(_getValueTimer) == pdTRUE) {
         if (_DEBUG) logger.log(PSTR("a02yyuw::stopTimer"));
-        xTimerStart(_getValueTimer, 0);
+        xTimerStop(_getValueTimer, 0);
     }
 }
 
