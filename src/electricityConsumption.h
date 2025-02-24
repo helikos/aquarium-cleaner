@@ -18,7 +18,7 @@ class ElectricityConsumption {
                 auto volt = ina_0->getVoltage((ina3221_ch_t)i);
                 auto watt = curr * volt;
                 char buffer[50];
-                int len = sprintf(buffer, "A%d: Current:%5.2fA Voltage:%5.2fV power:%5.2fwt", i+1, curr, volt, watt);
+                int len = sprintf(buffer, "A%d: Current:%5.2fA Voltage:%5.2fV power:%5.2fW", i+1, curr, volt, watt);
                 s += buffer;
                 s += i < 2 ? "\n":"";
             }
@@ -40,10 +40,7 @@ class ElectricityConsumption {
         }
 
         static void electricityConsumption(AsyncWebServerRequest *request){
-            String status = "Hi! I am ";
-            status += nameboard;
-            status += "\n";
-            status += "Electricity Consumption is\n";
+            String status = "Electricity Consumption is\n";
             status += getText(status);
             request->send(200, "text/plain", status);
         }

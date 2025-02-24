@@ -41,8 +41,7 @@ void setup()
   server.on("/log", HTTP_GET, Logger::publishLog);
   server.on("/memory", HTTP_GET, getFreeHeapSize);
   server.on("/electricity", HTTP_GET, electricityConsumption.electricityConsumption);
-
-//  AsyncElegantOTA.begin(&server); // Start ElegantOTA
+  AsyncElegantOTA.begin(&server); // Start ElegantOTA
   server.begin();
 
   Serial.println("HTTP server started");
@@ -54,15 +53,15 @@ void setup()
   sonic_sensor.init(sonicRX, sonicTX, sonic_baund_rate, false);
   electricityConsumption.init(INA3221_ADDR40_GND);
 
-//  esp_task_wdt_init(WDT_TIMEOUT, true); // Initialize ESP32 Task WDT
-//  esp_task_wdt_add(NULL);               // Subscribe to the Task WDT
+  esp_task_wdt_init(WDT_TIMEOUT, true); // Initialize ESP32 Task WDT
+  esp_task_wdt_add(NULL);               // Subscribe to the Task WDT
 
 }
 
 void loop() {
   pump.processing();
   electricityConsumption.consumeElectricity();
-//  esp_task_wdt_reset();
+  esp_task_wdt_reset();
   delay(1000);
 
 }

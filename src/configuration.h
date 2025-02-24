@@ -6,8 +6,8 @@
 #define _debug
 
 
-#define minLevel 40
-#define maxLevel 80
+#define minLevel 50
+#define maxLevel 60
 
 #define normalLevel (minLevel + maxLevel)/2
 
