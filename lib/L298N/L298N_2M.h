@@ -47,7 +47,7 @@ public:
    * @param pwmChA, pwmChB: esp32 pwm channel
    * @param debug: debug enable
    */
-  L298N_2M(int in1Pin,int in2Pin,int enAPin, int pwmChA, int in3Pin, int in4Pin,int enBPin, int pwmChB, boolean debug);   
+  L298N_2M(int in1Pin,int in2Pin,int enAPin, int pwmChA, int in3Pin, int in4Pin,int enBPin, int pwmChB, bool debug);   
   
   /**
    * Initializes the L298D motor driver
@@ -138,9 +138,9 @@ public:
   
 private:
 
-  void init(int in1Pin, int in2Pin, int enAPin, int pwmChA, int in3Pin, int in4Pin, int enBPin, int pwmChB, boolean debug);
+  void init(int in1Pin, int in2Pin, int enAPin, int pwmChA, int in3Pin, int in4Pin, int enBPin, int pwmChB, bool debug);
 
-  boolean _debug;
+   bool _debug;
    L298N _motor1;
    L298N _motor2;
 };

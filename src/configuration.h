@@ -3,7 +3,7 @@
 #define _CONFIGURATION_H
 
 #define nameboard "aquarium-cleaner"
-#define _debug
+#define DEBUG_FULL
 
 
 #define minLevel 50
@@ -23,15 +23,19 @@
 
 #define pumpInLedOnPin  2
 #define pumpInLedOffPin  4
-#define pumpInIn1Pin  25
-#define pumpInIn2Pin  33
-#define pumpInEnPin   32
+#define pumpInIn1Pin 25
+#define pumpInIn2Pin 33
+#define pumpInEnPin 32
+#define pumpInPWMCnl   0     //Chanel PWM 0 ESP32
 
-#define pumpOutLedOnPin  18
-#define pumpOutLedOffPin  19
-#define pumpOutIn1Pin  14
-#define pumpOutIn2Pin  27
-#define pumpOutEnPin   26
+#define pumpOutLedOnPin 18
+#define pumpOutLedOffPin 19
+#define pumpOutIn1Pin 14
+#define pumpOutIn2Pin 27
+#define pumpOutEnPin 26
+#define pumpOutPWMCnl   1     //Chanel PWM 1 ESP32
+
+#define _solenoidPin 12
 
 
 #define _consumeElectricityPeriod pdMS_TO_TICKS(1000)

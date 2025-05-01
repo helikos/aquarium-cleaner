@@ -37,7 +37,7 @@
 #define PWM_CHB   1     //Chanel PWM 1 ESP32
 #define PWM_RES   12    //Resolution bits
 #define PWM_FREQ  5000  //Freq
-#define MTR_VMIN  65    //Valore % minimo per mettere in movimento i motori
+#define MTR_VMIN  0    //Valore % minimo per mettere in movimento i motori
 
 
 class L298N
@@ -47,7 +47,7 @@ class L298N
     typedef enum {STOP=3, BRAKE, FORWARD, REVERSE} Status;
     
     L298N(int enPin, int inaPin, int inbPin);
-    L298N(int enPin, int inaPin, int inbPin, int pwmCh, boolean debug);
+    L298N(int enPin, int inaPin, int inbPin, int pwmCh, bool debug);
 
     void begin();
     void stop();
@@ -64,7 +64,7 @@ class L298N
 
   private:
 
-    void init(int inaPin, int inbPin, int enPin, int pwmCh, boolean debug);
+    void init(int inaPin, int inbPin, int enPin, int pwmCh, bool debug);
     
     int _enPin, _inaPin, _inbPin; //Configured pins
     int _pwmCh;
@@ -73,7 +73,8 @@ class L298N
     uint32_t _pwmDutyTick = pow(2, _pwmResolution)/255;
     int _speed;     //Stored speed
     L298N::Status _status; //Stored status
-    boolean _debug;
+    bool _debug;
+
 };
 
 #endif

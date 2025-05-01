@@ -3,7 +3,7 @@
 
 L298N_2M::L298N_2M(int in1Pin, int in2Pin, int enAPin, int pwmChA, 
                    int in3Pin, int in4Pin, int enBPin, int pwmChB, 
-                   boolean debug) : _motor1(in1Pin, in2Pin, enAPin, pwmChA, debug),
+                   bool debug) : _motor1(in1Pin, in2Pin, enAPin, pwmChA, debug),
                                     _motor2(in3Pin, in4Pin, enBPin, pwmChB, debug)
 {
   _debug=debug;  

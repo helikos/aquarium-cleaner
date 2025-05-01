@@ -13,7 +13,7 @@ extern "C"
 
 TimerHandle_t a02yyuw::_getValueTimer = NULL;
 SemaphoreHandle_t a02yyuw::shared_var_mutex = NULL;
-boolean a02yyuw::_DEBUG;
+bool a02yyuw::_DEBUG;
 int a02yyuw::distance;
 uint8_t a02yyuw::data[128];
 

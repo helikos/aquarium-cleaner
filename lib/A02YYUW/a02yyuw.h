@@ -13,7 +13,7 @@ extern "C" {
 class a02yyuw {
 
     private:
-        static boolean _DEBUG;
+        static bool _DEBUG;
         static TimerHandle_t _getValueTimer;
         static SemaphoreHandle_t shared_var_mutex;
         static int distance;
@@ -24,7 +24,7 @@ class a02yyuw {
         static void startTimer();
     
     public:
-        static void init(u_int16_t rxPin, u_int16_t txPin, uint32_t bound_rate, boolean debug = false) {    
+        static void init(u_int16_t rxPin, u_int16_t txPin, uint32_t bound_rate, bool debug = false) {    
             _DEBUG = debug;
             distance = 0;
             _getValueTimer = xTimerCreate(PSTR("a02yyuwTimer"), us_get_value_period, pdFALSE, (void *)0, reinterpret_cast<TimerCallbackFunction_t>(getValue));

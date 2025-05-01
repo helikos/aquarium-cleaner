@@ -5,11 +5,11 @@ L298N::L298N(int inaPin, int inbPin, int enPin) {
   this->init(inaPin, inbPin, enPin, 0, true);  
 }
 
-L298N::L298N(int inaPin, int inbPin, int enPin, int pwmCh, boolean debug) {
+L298N::L298N(int inaPin, int inbPin, int enPin, int pwmCh, bool debug) {
   this->init(inaPin, inbPin, enPin, pwmCh, debug);  
 }
 
-void L298N::init(int inaPin, int inbPin, int enPin, int pwmCh, boolean debug) {
+void L298N::init(int inaPin, int inbPin, int enPin, int pwmCh, bool debug) {
 
   if(this->_debug) debug("FB L298N Motor Library");  
   
